@@ -1,0 +1,88 @@
+------
+Drone: 1
+
+id: 0
+command: command
+response: ok
+start time: 2019-09-16 17:37:54.149892
+end_time: 2019-09-16 17:37:54.208739
+duration: 0.058847
+
+id: 1
+command: battery?
+response: None
+start time: 2019-09-16 17:37:59.161348
+end_time: None
+duration: None
+
+id: 2
+command: command
+response: 63
+
+start time: 2019-09-16 17:37:59.161558
+end_time: 2019-09-16 17:37:59.230499
+duration: 0.068941
+
+id: 3
+command: command
+response: None
+start time: 2019-09-16 17:37:59.231373
+end_time: None
+duration: None
+
+id: 4
+command: command
+response: None
+start time: 2019-09-16 17:38:08.232401
+end_time: None
+duration: None
+
+id: 5
+command: command
+response: None
+start time: 2019-09-16 17:38:17.234284
+end_time: None
+duration: None
+
+id: 6
+command: command
+response: None
+start time: 2019-09-16 17:38:26.236329
+end_time: None
+duration: None
+
+id: 7
+command: command
+response: None
+start time: 2019-09-16 17:38:35.238282
+end_time: None
+duration: None
+
+id: 8
+command: command
+response: None
+start time: 2019-09-16 17:38:44.239181
+end_time: None
+duration: None
+
+id: 9
+command: command
+response: None
+start time: 2019-09-16 17:38:53.239943
+end_time: None
+duration: None
+
+id: 10
+command: command
+response: None
+start time: 2019-09-16 17:39:02.241582
+end_time: None
+duration: None
+
+id: 11
+command: command
+response: None
+start time: 2019-09-16 17:39:11.242291
+end_time: None
+duration: None
+

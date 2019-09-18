@@ -1,0 +1,14 @@
+scan 2
+battery_check 20
+correct_ip
+1=0TQDG4FEDBYJNK
+2=0TQDG4FEDB86Y9
+*>takeoff
+sync 15
+1>jump 50 0 80 60 0 
+2>jump 50 0 80 60 0
+sync 15
+1>jump 70 0 80 60 0 
+2>jump 70 0 80 60 0
+sync 15
+*>land

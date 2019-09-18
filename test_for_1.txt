@@ -1,0 +1,13 @@
+scan 1
+battery_check 20
+correct_ip
+1=0TQDG4FEDBYJNK
+*>command
+*>attitude?
+*>takeoff
+sync 5
+//1>go 80 0 80 60
+//sync 5
+//1>flip r
+//sync 5
+*>land

@@ -1,0 +1,17 @@
+------
+Drone: 1
+
+id: 0
+command: command
+response: ok
+start time: 2019-09-15 00:07:37.616080
+end_time: 2019-09-15 00:07:37.660893
+duration: 0.044813
+
+id: 1
+command: sn?
+response: 0TQDG4FEDB86Y9
+start time: 2019-09-15 00:07:42.631922
+end_time: 2019-09-15 00:07:42.689782
+duration: 0.05786
+

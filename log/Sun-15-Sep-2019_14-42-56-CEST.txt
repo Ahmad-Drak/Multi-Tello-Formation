@@ -1,0 +1,53 @@
+------
+Drone: 1
+
+id: 0
+command: command
+response: ok
+start time: 2019-09-15 14:42:56.720937
+end_time: 2019-09-15 14:42:56.751708
+duration: 0.030771
+
+id: 1
+command: battery?
+response: 100
+
+start time: 2019-09-15 14:43:01.736890
+end_time: 2019-09-15 14:43:01.766945
+duration: 0.030055
+
+id: 2
+command: sn?
+response: 0TQDG4FEDBYJNK
+start time: 2019-09-15 14:43:02.738847
+end_time: 2019-09-15 14:43:02.787308
+duration: 0.048461
+
+id: 3
+command: takeoff
+response: ok
+start time: 2019-09-15 14:43:04.242411
+end_time: 2019-09-15 14:43:10.632461
+duration: 6.39005
+
+id: 4
+command: go 80 0 80 60
+response: ok
+start time: 2019-09-15 14:43:10.632740
+end_time: 2019-09-15 14:43:14.200510
+duration: 3.56777
+
+id: 5
+command: flip r
+response: ok
+start time: 2019-09-15 14:43:14.275952
+end_time: 2019-09-15 14:43:17.815778
+duration: 3.539826
+
+id: 6
+command: land
+response: ok
+start time: 2019-09-15 14:43:17.872940
+end_time: 2019-09-15 14:43:21.842533
+duration: 3.969593
+

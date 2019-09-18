@@ -8,6 +8,9 @@ from netaddr import IPNetwork
 from collections import defaultdict
 from stats import Stats
 import binascii
+import curses
+#from multi_tello import all_queue_empty
+
 class Tello:
     """
     A wrapper class to interact with Tello
@@ -19,6 +22,26 @@ class Tello:
     def send_command(self, command):
         return self.Tello_Manager.send_command(command, self.tello_ip)
 
+    def get_tello_states(self):
+        self.local_ip_ = ''
+        self.local_port_ = 8890 #this port is used to get all sates of the tello(as oppsed to 8889 to send commands etc.)
+        self.socket_ = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)  # socket for sending cmd
+        self.socket_.bind((self.local_ip_, self.local_port_))
+
+        response__, ip = self.socket_.recvfrom(1024)
+        print ('TTEST RESPONSEEEEE',response__)
+
+
+        #cmd='command'
+        #state_flag=True
+        #while not all_queue_empty(execution_pools):
+        #for x in range(10):
+        #    state=self.Tello_Manager.send_command_for_recording(cmd,self.tello_ip)
+        #    print ('THIS IS THE STATE',state)
+        #    print ('TELLO IP tello_ip',self.tello_ip)
+        #print ('ALL QUEUE EMPTY', all_queue_empty(execution_pools))
+            #self.socket.sendto('command'.encode('utf-8'), tello_ip)
+
 class Tello_Manager:
     def __init__(self):
         self.local_ip = ''
@@ -26,10 +49,20 @@ class Tello_Manager:
         self.socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)  # socket for sending cmd
         self.socket.bind((self.local_ip, self.local_port))
 
+        self.local_ip_ = ''
+        self.local_port_ = 8890 #this port is used to get all sates of the tello(as oppsed to 8889 to send commands etc.)
+        self.socket_ = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)  # socket for sending cmd
+        #self.socket_.bind((self.local_ip_, self.local_port_))
+
         # thread for receiving cmd ack
         self.receive_thread = threading.Thread(target=self._receive_thread)
         self.receive_thread.daemon = True
         self.receive_thread.start()
+
+        # thread for receiving cmd ack
+        self.receive_thread_ = threading.Thread(target=self._receive_thread_for_recording)
+        self.receive_thread_.daemon = True
+        self.receive_thread_.start()
 
         self.tello_ip_list = []
         self.tello_list = []
@@ -39,6 +72,12 @@ class Tello_Manager:
 
         self.last_response_index = {}
         self.str_cmd_index = {}
+
+    def __repr__(self):
+        return repr(self.tello_list)
+
+
+
 
     def find_avaliable_tello(self, num):
         """
@@ -117,6 +156,59 @@ class Tello_Manager:
     def get_tello_list(self):
         return self.tello_list
 
+    def get_tello_ip_list(self):
+        return self.tello_ip_list
+
+    '''
+    def send_command_for_recording(self, command, ip):
+        """
+        Send a command to the ip address. Will be blocked until
+        the last command receives an 'OK'.
+        If the command fails (either b/c time out or error),
+        will try to resend the command
+        :param command: (str) the command to send
+        :param ip: (str) the ip of Tello
+        :return: The latest command response
+        """
+        #global cmd
+        command_sof_1 = ord(command[0])
+        command_sof_2 = ord(command[1])
+        if command_sof_1 == 0x52 and command_sof_2 == 0x65:
+            multi_cmd_send_flag = True
+        else :
+            multi_cmd_send_flag = False
+
+        if multi_cmd_send_flag == True:      
+            self.str_cmd_index[ip] = self.str_cmd_index[ip] + 1
+            for num in range(1,5):                
+                str_cmd_index_h = self.str_cmd_index[ip]/128 + 1
+                str_cmd_index_l = self.str_cmd_index[ip]%128
+                if str_cmd_index_l == 0:
+                    str_cmd_index_l = str_cmd_index_l + 2
+                cmd_sof =[0x52,0x65,str_cmd_index_h,str_cmd_index_l,0x01,num + 1,0x20]
+                cmd_sof_str = str(bytearray(cmd_sof))
+                cmd = cmd_sof_str + command[3:]
+                self.socket_.sendto(cmd.encode('utf-8'), (ip, 8890))
+                print ('COMMAANNDDDDDDD', cmd)
+
+            print '[Multi_Command]----Multi_Send----IP:%s----Command:   %s\n' % (ip, command[3:])           
+            real_command = command[3:]
+        else:
+            self.socket_.sendto(command.encode('utf-8'), (ip, 8890))
+            print '[Single_Command]----Single_Send----IP:%s----Command:   %s\n' % (ip, command)
+            real_command = command
+            print ('COMMAANNDDDDDDD2222', real_command)
+        
+        self.log[ip].append(Stats(real_command, len(self.log[ip])))
+        start = time.time()
+        while not self.log[ip][-1].got_response():
+            now = time.time()
+            diff = now - start
+            if diff > self.COMMAND_TIME_OUT:
+                print '[Not_Get_Response]Max timeout exceeded...command: %s \n' % real_command
+                return    
+
+    '''
     def send_command(self, command, ip):
         """
         Send a command to the ip address. Will be blocked until
@@ -163,6 +255,46 @@ class Tello_Manager:
                 print '[Not_Get_Response]Max timeout exceeded...command: %s \n' % real_command
                 return    
 
+
+    def _receive_thread_for_recording(self):
+        while True:
+            try:
+                self.response_, ip = self.socket.recvfrom(1024)
+                #print ('RESPONSEEEEEE for recordinggggg',self.response_)
+
+                ip = ''.join(str(ip[0]))
+                if self.response_.upper() == 'OK' and ip not in self.tello_ip_list:
+                    print '[Found_Tello]Found Tello.The Tello ip is:%s\n' % ip
+                    self.tello_ip_list.append(ip)
+                    self.last_response_index[ip] = 100
+                    self.tello_list.append(Tello(ip, self))
+                    self.str_cmd_index[ip] = 1
+                response_sof_part1 = ord(self.response_[0])               
+                response_sof_part2 = ord(self.response_[1])
+                #print ('RESPONSEEEEEE PART 1',self.response_[0])
+                #print ('RESPONSEEEEEE PART 2',self.response_[1])
+                #print ('RESPONSEEEEEE LENGTH ',len(self.response_))
+
+
+                if response_sof_part1 == 0x52 and response_sof_part2 == 0x65:
+                    response_index = ord(self.response_[3])
+                    
+                    if response_index != self.last_response_index[ip]:
+                        #print '--------------------------response_index:%x %x'%(response_index,self.last_response_index)
+                        print'[Multi_Response] ----Multi_Receive----IP:%s----Response:   %s ----\n' % (ip, self.response_[7:])
+                        self.log[ip][-1].add_response(self.response_[7:],ip)
+                    self.last_response_index[ip] = response_index
+                else:
+                    print'[Single_Response]----Single_Receive----IP:%s----Response:   %s ----\n' % (ip, self.response_)
+                    self.log[ip][-1].add_response(self.response_,ip)
+                #print'[Response_WithIP]----Receive----IP:%s----Response:%s----\n' % (ip, self.response)
+                         
+            except socket.error, exc:
+                print "[Exception_Error]Caught exception socket.error : %s\n" % exc
+          
+
+
+
     def _receive_thread(self):
         """Listen to responses from the Tello.
 
@@ -172,6 +304,12 @@ class Tello_Manager:
         while True:
             try:
                 self.response, ip = self.socket.recvfrom(1024)
+                #print ('RESPONSEEEEEE ORIGINAL',self.response)
+                #print ('RESPONSEEEEEE LENGTH ',len(self.response))
+                #testing= self.response.decode('ASCII')
+                #print('TESTING ASCII',testing)
+
+
                 ip = ''.join(str(ip[0]))
                 if self.response.upper() == 'OK' and ip not in self.tello_ip_list:
                     print '[Found_Tello]Found Tello.The Tello ip is:%s\n' % ip
@@ -181,6 +319,11 @@ class Tello_Manager:
                     self.str_cmd_index[ip] = 1
                 response_sof_part1 = ord(self.response[0])               
                 response_sof_part2 = ord(self.response[1])
+                #print ('RESPONSEEEEEE PART 1',self.response[0])
+                #print ('RESPONSEEEEEE PART 2',self.response[1])
+                #print ('RESPONSEEEEEE LENGTH ',len(self.response))
+
+
                 if response_sof_part1 == 0x52 and response_sof_part2 == 0x65:
                     response_index = ord(self.response[3])
                     

@@ -1,0 +1,18 @@
+------
+Drone: 1
+
+id: 0
+command: command
+response: ok
+start time: 2019-09-16 21:53:20.916268
+end_time: 2019-09-16 21:53:21.106716
+duration: 0.190448
+
+id: 1
+command: battery?
+response: 31
+
+start time: 2019-09-16 21:53:25.926996
+end_time: 2019-09-16 21:53:25.980983
+duration: 0.053987
+

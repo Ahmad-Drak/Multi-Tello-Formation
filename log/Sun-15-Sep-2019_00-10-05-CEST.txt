@@ -1,0 +1,106 @@
+------
+Drone: 1
+
+id: 0
+command: command
+response: ok
+start time: 2019-09-15 00:10:05.701666
+end_time: 2019-09-15 00:10:05.936673
+duration: 0.235007
+
+id: 1
+command: battery?
+response: 33
+
+start time: 2019-09-15 00:10:10.716265
+end_time: 2019-09-15 00:10:11.361668
+duration: 0.645403
+
+id: 2
+command: sn?
+response: 0TQDG4FEDBYJNK
+start time: 2019-09-15 00:10:12.222004
+end_time: 2019-09-15 00:10:12.929253
+duration: 0.707249
+
+id: 3
+command: takeoff
+response: ok
+start time: 2019-09-15 00:10:13.224581
+end_time: 2019-09-15 00:10:23.260497
+duration: 10.035916
+
+id: 4
+command: jump 50 0 80 60 0
+response: None
+start time: 2019-09-15 00:10:23.272128
+end_time: None
+duration: None
+
+id: 5
+command: jump 70 0 80 60 0
+response: None
+start time: 2019-09-15 00:10:39.458738
+end_time: None
+duration: None
+
+id: 6
+command: land
+response: error
+start time: 2019-09-15 00:10:55.570525
+end_time: 2019-09-15 00:10:55.593032
+duration: 0.022507
+
+------
+Drone: 2
+
+id: 0
+command: command
+response: ok
+start time: 2019-09-15 00:10:05.701930
+end_time: 2019-09-15 00:10:06.039404
+duration: 0.337474
+
+id: 1
+command: battery?
+response: 64
+
+start time: 2019-09-15 00:10:10.724638
+end_time: 2019-09-15 00:10:11.362046
+duration: 0.637408
+
+id: 2
+command: sn?
+response: 0TQDG4FEDB86Y9
+start time: 2019-09-15 00:10:12.223860
+end_time: 2019-09-15 00:10:12.929161
+duration: 0.705301
+
+id: 3
+command: takeoff
+response: ok
+start time: 2019-09-15 00:10:13.222750
+end_time: 2019-09-15 00:10:23.172491
+duration: 9.949741
+
+id: 4
+command: jump 50 0 80 60 0
+response: None
+start time: 2019-09-15 00:10:23.272864
+end_time: None
+duration: None
+
+id: 5
+command: jump 70 0 80 60 0
+response: None
+start time: 2019-09-15 00:10:39.465411
+end_time: None
+duration: None
+
+id: 6
+command: land
+response: error
+start time: 2019-09-15 00:10:55.571321
+end_time: 2019-09-15 00:10:55.608118
+duration: 0.036797
+
